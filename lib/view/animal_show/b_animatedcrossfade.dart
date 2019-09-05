@@ -15,20 +15,21 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Extended Tabs Demo'),
+      home: AnimalCrossFadePage(title: 'Extended Tabs Demo'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class AnimalCrossFadePage extends StatefulWidget {
+  AnimalCrossFadePage({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _AnimalCrossFadePageState createState() => _AnimalCrossFadePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+class _AnimalCrossFadePageState extends State<AnimalCrossFadePage>
+    with TickerProviderStateMixin {
   TabController tabController;
   TabController tabController1;
   TabController tabController2;
@@ -43,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   double dxDistans = 0;
 
-  var rightdWidth=0.0;
+  var rightdWidth = 0.0;
 
   @override
   void initState() {
@@ -67,154 +68,77 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     ScreenUtil.instance = ScreenUtil(width: 828, height: 1792)..init(context);
     return Material(
         color: Color(0xFF01579B),
-        child: Stack(
-          alignment:Alignment(0,1),
-          children: <Widget>[
-          Stack(
-            alignment: Alignment(-1, 0.5),
-            children: <Widget>[
-              Stack(
-                alignment:Alignment(1, -1.8),
-                children: <Widget>[
-                  getcontent(),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {});
-                    },
-                    child: AnimatedContainer(
-                      duration: Duration(seconds: 2),
-                      width: MediaQuery.of(context).size.width,
-                      height:200,
-                      margin:EdgeInsets.only(top:width),
-                      transform:Matrix4.rotationZ(0.5),
-                      child: Stack(
-                        alignment: Alignment(1, -1),
-                        children: <Widget>[
-                          Container(
-                            height: 200,
-                            width: MediaQuery.of(context).size.width,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                        "images/xiayu.gif",
-                                      ),
-                                      fit: BoxFit.fill),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.orangeAccent,
-                                        blurRadius: 70)
-                                  ]),
-                            ),
-                          ),
-                        ],
-                      ),
-                      curve: Curves.bounceOut,
-                    ),
-                  )
-                ],
-              ),
-              GestureDetector(
+        child: Stack(alignment: Alignment(1, -1), children: <Widget>[
+          getcontent(),
+          Container(
+            margin: EdgeInsets.only(top: 100),
+            child: AnimatedCrossFade(
+              firstCurve: Curves.fastLinearToSlowEaseIn,
+              secondCurve: Curves.ease,
+              firstChild: InkWell(
                 onTap: () {
+                  isFlag = !isFlag;
                   setState(() {});
                 },
-                child: AnimatedContainer(
-                  duration: Duration(seconds: 2),
-                  width: secondWidth,
-                  height: 300,
-                  child: Stack(
-                    alignment: Alignment(1, 0),
+                child: Container(
+                  alignment: Alignment.center,
+                  width: 50.0,
+                  height: 50.0,
+                  child: Text(
+                    '播放',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.all(Radius.circular(300))),
+                ),
+              ),
+              secondChild: InkWell(
+                onTap: () {
+                  isFlag = !isFlag;
+                  setState(() {});
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  child: Column(
                     children: <Widget>[
-                      GestureDetector(
-                        onHorizontalDragDown: (horidown) {
-                          pointXStar = horidown.localPosition.dx;
-                        },
-                        onHorizontalDragUpdate: (dragUpdate) {
-                          if (pointXStar>dragUpdate.delta.dx) {
-                            dxDistans =  pointXStar-dragUpdate.delta.dx;
-                            print(dxDistans);
-                            setState(() {
-                              secondWidth=0;
-                            });
-                          } else {
-                          }
-                        },
-                        child: Container(
-                          height:500,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                              color: Colors.deepOrangeAccent,
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(20),
-                                  bottomRight: Radius.circular(20)),
-                              image: DecorationImage(
-                                  image: AssetImage("images/girl.gif"),
-                                  fit: BoxFit.fill),
-                              boxShadow: [
-                                BoxShadow(color: Colors.blue, blurRadius: 10)
-                              ]),
+                      Container(
+                        margin:EdgeInsets.all(10),
+                        alignment:Alignment.centerRight,
+                        width: MediaQuery.of(context).size.width,
+                        child: Text(
+                          "关闭",
+                          style: TextStyle(
+                            fontSize:15,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ],
                   ),
-                  curve: Curves.ease,
+                  decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
                 ),
-              )
-            ],
-          ),
-          GestureDetector(
-            onTap: () {
-              setState(() {});
-            },
-            child: AnimatedContainer(
-              duration: Duration(seconds: 2),
-              width: MediaQuery.of(context).size.width,
-              height: rightdWidth,
-              child: Stack(
-                alignment: Alignment(1,1),
-                children: <Widget>[
-                  GestureDetector(
-                    onHorizontalDragDown: (horidown) {
-                      pointXStar = horidown.localPosition.dx;
-                    },
-                    onHorizontalDragUpdate: (dragUpdate) {
-                      if (pointXStar>dragUpdate.delta.dx) {
-                        dxDistans =  pointXStar-dragUpdate.delta.dx;
-                        print(dxDistans);
-                        setState(() {
-                          rightdWidth=0;
-                        });
-                      } else {
-                      }
-                    },
-                    child: Container(
-                      height:80,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          color: Colors.deepOrangeAccent,
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(20),
-                              bottomRight: Radius.circular(20)),
-                          image: DecorationImage(
-                              image: AssetImage("images/map.png"),
-                              fit: BoxFit.fill),
-                          boxShadow: [
-                            BoxShadow(color: Colors.blue, blurRadius: 10)
-                          ]),
-                    ),
-                  ),
-                ],
               ),
-              curve: Curves.linear,
+              crossFadeState:
+                  isFlag ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+              duration: Duration(milliseconds:50),
             ),
-          )
-
-        ],));
+          ),
+        ]));
   }
 
   Widget getcontent() {
     return Stack(
-      alignment: Alignment(1, 0),
+      alignment: Alignment(1, -1),
       children: <Widget>[
         Container(
           margin: EdgeInsets.only(top: 56),
@@ -600,8 +524,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             height: 30,
             width: 60,
             child: Text(
-              !isFlag ? "播放" : "关闭",
-              style: TextStyle(color: Colors.white),
+              !isFlag ? "@" : "😍",
+              style: TextStyle(color: Colors.white,fontSize:22),
             ),
             decoration: BoxDecoration(
                 color: Colors.orangeAccent,
@@ -613,12 +537,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             isFlag = !isFlag;
             if (isFlag) {
               width = 200;
-              secondWidth = 100;
-              rightdWidth=500;
+              secondWidth = 300;
+              rightdWidth = 500;
             } else {
               width = 0;
               secondWidth = 0;
-              rightdWidth=0;
+              rightdWidth = 0;
             }
             setState(() {});
           },
