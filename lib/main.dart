@@ -6,7 +6,7 @@ void main() => runApp(MyApp());
 //我是分支路线
 
 
-//
+//我是主分支内容。
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
